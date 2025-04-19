@@ -3,56 +3,61 @@ import keyboard
 userList = {}
 
 while True:
-    # login = input("Login\n")
-    # password = int(input("Password\n"))
-    # userList[login] = password
-    # print(f"{login} added.\n")
-    print("Please press corresponding key\n" \
-    "S to Show list\n" \
-    "C to Create new user\n" \
-    "R to Remove a user\n" \
-    "Q to quit")
-    buttonPressed = keyboard.read_event()
-    if buttonPressed.event_type == keyboard.KEY_DOWN:
-        key = buttonPressed.name.lower()
-        if key == "s":
-            try:
-                rootPassword = int(input("Admin password:\n"))
-            except ValueError:
-                print("Invalid password! Must be a number.\n")
-                continue
-            if rootPassword == 1234:
-                print(f"List:\n {userList}")
-        elif key == "c":
-            login = input("Login:\n")
+    print("\nPlease press a corresponding key:\n" \
+"S to Show list\n" \
+"C to Create new user\n" \
+"R to Remove a user\n" \
+"Q to Quit")
+
+    key = keyboard.read_key().lower()
+
+    if key == "s":
+        try:
+            rootPassword = int(input("Admin password:\n"))
+        except ValueError:
+            print("Invalid password! Must be a number.\n")
+            continue
+        if rootPassword == 1234:
+            print(f"User List:\n{userList}")
+        else:
+            print("Incorrect admin password.\n")
+
+    elif key == "c":
+        login = input("Login:\n").strip()
+        if login in userList:
+            print("This user already exists.\n")
+            continue
+        try:
+            password = int(input("Password:\n"))
+        except ValueError:
+            print("Invalid input! Password must be a number.\n")
+            continue
+        userList[login] = password
+        print(f"New user '{login}' was added.\n")
+
+    elif key == "r":
+        login = input("Enter your login:\n").strip()
+        if login in userList:
             try:
                 password = int(input("Password:\n"))
             except ValueError:
                 print("Invalid input! Password must be a number.\n")
                 continue
-            userList[login] = password
-            print(f"New user - {login} was added")
-        elif key == "r":
-            login = input("Enter your login:\n")
-            if login in userList:
-                try:
-                    password = int(input("Password:\n"))
-                except ValueError:
-                    print("Invalid input! Password must be a number.\n")
-                    continue
-                if userList.get(login) == password:
-                    userAgree = input("Are you sure you want to delete your account?\nYes/No? ")
-                    userAgree = userAgree.lower()
-                    if userAgree == "yes":
-                        del userList[login]
-                        print(f"{login} removed.\n")
-                    else:
-                        print("Account was not deleted.\n")
+            if userList.get(login) == password:
+                userAgree = input("Are you sure you want to delete your account?\nYes/No? ").lower().strip()
+                if userAgree == "yes":
+                    del userList[login]
+                    print(f"User '{login}' was removed.\n")
                 else:
-                    print("Oops, wrong password")
+                    print("Account was not deleted.\n")
             else:
-                print("Sorry, that user does not exist")
-        elif key == "q":
-            break
+                print("Oops, wrong password.\n")
         else:
-            print("Dude, look what you typing")
+            print("Sorry, that user does not exist.\n")
+
+    elif key == "q":
+        print("Exiting... Goodbye!\n")
+        break
+
+    else:
+        print("Invalid key! Please use S, C, R, or Q.\n")
