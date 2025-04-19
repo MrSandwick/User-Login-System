@@ -1,13 +1,13 @@
 import keyboard
 
 userList = {}
-
-while True:
-    print("\nPlease press a corresponding key:\n" \
+print("\nPlease press a corresponding key:\n" \
 "S to Show list\n" \
 "C to Create new user\n" \
 "R to Remove a user\n" \
 "Q to Quit")
+
+while True:
 
     key = keyboard.read_key().lower()
 
